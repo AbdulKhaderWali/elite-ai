@@ -84,8 +84,8 @@ const Navbar = () => {
                                 <Image
                                     src="/elite-2.png" // Make sure this path is correct
                                     alt="Elite AI Logo"
-                                    width={150}
-                                    height={37}
+                                    width={200}
+                                    height={150}
                                     priority
                                 />
                             </Link>
@@ -97,13 +97,13 @@ const Navbar = () => {
                                 link.isButton ? null : (
                                 !link.sublinks ? (
                                     <Link key={link.label} href={link.href}>
-                                        <span className="px-4 py-2 rounded-md text-sm font-medium text-text-secondary hover:bg-accent-secondary hover:text-text-primary transition-colors duration-300">
+                                        <span className="px-4 py-2 rounded-md text-sm font-bold text-text-secondary hover:bg-accent-primary hover:text-text-primary transition-colors duration-300">
                                             {link.label}
                                         </span>
                                     </Link>
                                 ) : (
                                     <div key={link.label} className="relative group">
-                                        <button className="px-4 py-2 rounded-md text-sm font-medium text-text-secondary hover:bg-accent-secondary hover:text-text-primary flex items-center transition-colors duration-300 focus:outline-none">
+                                        <button className="px-4 py-2 rounded-md text-sm font-bold text-text-secondary hover:bg-accent-primary hover:text-text-primary flex items-center transition-colors duration-300 focus:outline-none">
                                             <span>{link.label}</span>
                                             <KeyboardArrowDownIcon className="ml-1 transform group-hover:rotate-180 transition-transform duration-300" />
                                         </button>
@@ -111,7 +111,7 @@ const Navbar = () => {
                                             <div className="py-2">
                                                 {link.sublinks.map((sublink) => (
                                                     <Link key={sublink.label} href={sublink.href}>
-                                                        <span className="block px-4 py-2 text-sm text-text-secondary hover:bg-accent-primary/10 hover:text-accent-primary">
+                                                        <span className="block px-4 py-2 text-sm text-text-secondary hover:bg-accent-primary/10 ">
                                                             {sublink.label}
                                                         </span>
                                                     </Link>
