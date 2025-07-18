@@ -1,8 +1,9 @@
 "use client";
 // components/Navbar.js
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation'; // Import usePathname
 
 // --- Icon Components (unchanged) ---
 const MenuIcon = (props) => (
@@ -31,13 +32,14 @@ const KeyboardArrowDownIcon = (props) => (
 const Navbar = () => {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
+    const pathname = usePathname(); // Get current path
 
     // --- Data for Navigation Links ---
-    const navLinks = [
+    const navLinks = useMemo( () => [
         { href: "/", label: "Home" },
-        { 
-            href: "/ai", 
-            label: "AI", 
+        {
+            href: "/ai",
+            label: "AI",
             sublinks: [
                 { href: "/ai/machine-learning", label: "Machine Learning" },
                 { href: "/ai/deep-learning", label: "Deep Learning" },
@@ -45,9 +47,9 @@ const Navbar = () => {
                 { href: "/ai/computer-vision", label: "Computer Vision" },
             ]
         },
-        { 
-            href: "/cybersecurity", 
-            label: "Cybersecurity", 
+        {
+            href: "/cybersecurity",
+            label: "Cybersecurity",
             sublinks: [
                 { href: "/cybersecurity/threat-intelligence", label: "Threat Intelligence" },
                 { href: "/cybersecurity/incident-response", label: "Incident Response" },
@@ -56,7 +58,7 @@ const Navbar = () => {
         },
         { href: "/transformation", label: "Transformation" },
         { href: "/contact", label: "Contact Us", isButton: true },
-    ];
+    ], []);
 
     // Effect to prevent body scroll when mobile menu is open
     useEffect(() => {
@@ -68,13 +70,26 @@ const Navbar = () => {
         return () => { document.body.style.overflow = 'auto'; };
     }, [isMobileMenuOpen]);
 
+    // Effect to close mobile submenu when navigating
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            const activeParent = navLinks.find(link => link.sublinks && pathname.startsWith(link.href));
+            if (activeParent) {
+                setOpenMobileSubmenu(activeParent.label);
+            } else {
+                setOpenMobileSubmenu(null);
+            }
+        }
+    }, [pathname, isMobileMenuOpen, navLinks]);
+
+
     const handleSubmenuToggle = (label) => {
         setOpenMobileSubmenu(openMobileSubmenu === label ? null : label);
     };
 
     return (
         <>
-            {/* Main Navigation Bar updated to have a solid background */}
+            {/* Main Navigation Bar */}
             <nav className="bg-surface shadow-sm sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-20">
@@ -82,7 +97,7 @@ const Navbar = () => {
                         <div className="flex-shrink-0">
                             <Link href="/">
                                 <Image
-                                    src="/elite-2.png" // Make sure this path is correct
+                                    src="/elite-2.png"
                                     alt="Elite AI Logo"
                                     width={200}
                                     height={150}
@@ -93,17 +108,25 @@ const Navbar = () => {
 
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-2">
-                            {navLinks.map((link) => 
+                            {navLinks.map((link) =>
                                 link.isButton ? null : (
                                 !link.sublinks ? (
                                     <Link key={link.label} href={link.href}>
-                                        <span className="px-4 py-2 rounded-md text-sm font-bold text-text-secondary hover:bg-accent-primary hover:text-text-primary transition-colors duration-300">
+                                        <span className={`px-4 py-2 rounded-md text-sm font-bold transition-colors duration-300 ${
+                                            pathname === link.href
+                                                ? 'bg-accent-primary text-text-primary'
+                                                : 'text-text-secondary hover:bg-accent-primary'
+                                        }`}>
                                             {link.label}
                                         </span>
                                     </Link>
                                 ) : (
                                     <div key={link.label} className="relative group">
-                                        <button className="px-4 py-2 rounded-md text-sm font-bold text-text-secondary hover:bg-accent-primary hover:text-text-primary flex items-center transition-colors duration-300 focus:outline-none">
+                                        <button className={`px-4 py-2 rounded-md text-sm font-bold flex items-center transition-colors duration-300 focus:outline-none ${
+                                            pathname.startsWith(link.href)
+                                                ? 'bg-accent-primary text-text-primary'
+                                                : 'text-text-secondary hover:bg-accent-primary'
+                                        }`}>
                                             <span>{link.label}</span>
                                             <KeyboardArrowDownIcon className="ml-1 transform group-hover:rotate-180 transition-transform duration-300" />
                                         </button>
@@ -111,7 +134,11 @@ const Navbar = () => {
                                             <div className="py-2">
                                                 {link.sublinks.map((sublink) => (
                                                     <Link key={sublink.label} href={sublink.href}>
-                                                        <span className="block px-4 py-2 text-sm text-text-secondary hover:bg-accent-primary/10 ">
+                                                        <span className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                                                            pathname === sublink.href
+                                                                ? 'text-accent-primary font-semibold'
+                                                                : 'text-text-secondary hover:bg-accent-primary/10'
+                                                        }`}>
                                                             {sublink.label}
                                                         </span>
                                                     </Link>
@@ -123,7 +150,11 @@ const Navbar = () => {
                             ))}
                              {/* Desktop Contact Button */}
                             <Link href="/contact">
-                                <span className="ml-4 px-5 py-2.5 rounded-full text-sm font-semibold text-text-primary bg-accent-primary hover:bg-accent-primary-hover transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <span className={`ml-4 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${
+                                    pathname === '/contact'
+                                        ? 'bg-accent-primary-hover text-white'
+                                        : 'text-text-primary bg-accent-primary hover:bg-accent-primary-hover'
+                                }`}>
                                     Contact Us
                                 </span>
                             </Link>
@@ -139,7 +170,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
-            
+
             {/* Mobile Menu */}
             <div className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 <div className="absolute inset-0 bg-black/30" onClick={() => setMobileMenuOpen(false)}></div>
@@ -155,13 +186,21 @@ const Navbar = () => {
                             {navLinks.map((link) => (
                                 !link.sublinks ? (
                                     <Link key={link.label} href={link.href} onClick={() => setMobileMenuOpen(false)}>
-                                        <span className={`block px-4 py-3 rounded-lg text-base font-medium ${link.isButton ? 'bg-accent-primary text-text-primary text-center' : 'text-text-primary hover:bg-accent-primary/10'}`}>
+                                        <span className={`block px-4 py-3 rounded-lg text-base font-medium ${
+                                            link.isButton
+                                                ? 'bg-accent-primary text-text-primary text-center'
+                                                : pathname === link.href
+                                                    ? 'bg-accent-primary/10 text-accent-primary'
+                                                    : 'text-text-primary hover:bg-accent-primary/10'
+                                        }`}>
                                             {link.label}
                                         </span>
                                     </Link>
                                 ) : (
                                     <div key={link.label} className="py-1">
-                                        <button onClick={() => handleSubmenuToggle(link.label)} className="w-full flex justify-between items-center px-4 py-3 rounded-lg text-base font-medium text-text-primary hover:bg-accent-primary/10">
+                                        <button onClick={() => handleSubmenuToggle(link.label)} className={`w-full flex justify-between items-center px-4 py-3 rounded-lg text-base font-medium ${
+                                            pathname.startsWith(link.href) ? 'bg-accent-primary/10 text-accent-primary' : 'text-text-primary hover:bg-accent-primary/10'
+                                        }`}>
                                             <span>{link.label}</span>
                                             <KeyboardArrowDownIcon className={`transform transition-transform duration-300 ${openMobileSubmenu === link.label ? 'rotate-180' : ''}`} />
                                         </button>
@@ -169,7 +208,11 @@ const Navbar = () => {
                                             <div className="pl-6 mt-2 space-y-1 border-l-2 border-accent-primary/20">
                                                 {link.sublinks.map((sublink) => (
                                                     <Link key={sublink.label} href={sublink.href} onClick={() => setMobileMenuOpen(false)}>
-                                                        <span className="block px-3 py-2 rounded-md text-sm font-medium text-text-secondary hover:bg-accent-primary/10 hover:text-accent-primary">
+                                                        <span className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                                                            pathname === sublink.href
+                                                                ? 'text-accent-primary font-semibold'
+                                                                : 'text-text-secondary hover:bg-accent-primary/10 hover:text-accent-primary'
+                                                        }`}>
                                                             {sublink.label}
                                                         </span>
                                                     </Link>
