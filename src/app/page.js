@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react'; // Added useState for the new interactive section
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -11,36 +11,14 @@ import HubIcon from '@mui/icons-material/Hub';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
-import { Shield, Lock } from 'lucide-react';
+// New Icons for the added sections
+import PolicyIcon from '@mui/icons-material/Policy';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import ReportIcon from '@mui/icons-material/Report';
+import ArticleIcon from '@mui/icons-material/Article';
+
+import { Shield, Lock, ArrowRight } from 'lucide-react'; // Added ArrowRight
 import CybersecurityHeroBackground from '../components/HeroBackground';
-
-// --- Animated SVG Hero Background ---
-// This background is now fully theme-aware, using the new --accent-primary variable.
-// const HeroBackgroundSVG = () => (
-//     <div className="absolute inset-0 w-full h-full overflow-hidden -z-10">
-//         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-//             <defs>
-//                 <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
-//                     {/* Grid lines now use the new accent-primary color's RGB values for a subtle effect */}
-//                     <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(5, 242, 160, 0.05)" strokeWidth="0.5"/>
-//                 </pattern>
-//                 <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-//                     <rect width="100" height="100" fill="url(#smallGrid)"/>
-//                     <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(5, 242, 160, 0.1)" strokeWidth="1"/>
-//                 </pattern>
-//                 <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-//                     {/* The glowing effect correctly uses the --accent-primary variable */}
-//                     <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.3" />
-//                     <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0" />
-//                 </radialGradient>
-//             </defs>
-//             <rect width="100%" height="100%" fill="url(#grid)" />
-//             <circle cx="50%" cy="50%" r="40%" fill="url(#glow)" className="animate-pulse" />
-//         </svg>
-//     </div>
-// );
-
-
 
 // --- Data for Page Sections (Updated with new color classes) ---
 const services = [
@@ -84,6 +62,50 @@ const whyChooseUsItems = [
     }
 ];
 
+// --- Data for NEW Sections ---
+const processSteps = [
+    {
+        icon: <PolicyIcon className="!text-5xl text-accent-primary" />,
+        title: "1. Discovery & Assessment",
+        description: "We begin by thoroughly understanding your environment, identifying critical assets, and assessing your current security posture."
+    },
+    {
+        icon: <TrackChangesIcon className="!text-5xl text-accent-primary" />,
+        title: "2. Strategy & Implementation",
+        description: "A tailored security strategy is developed and implemented, integrating our AI-powered solutions seamlessly into your workflow."
+    },
+    {
+        icon: <ReportIcon className="!text-5xl text-accent-primary" />,
+        title: "3. Monitor & Respond",
+        description: "Our team continuously monitors for threats, providing real-time response and detailed reporting to keep you informed and secure."
+    }
+];
+
+const featuredInsights = [
+    {
+        image: '/cyber1.avif', // Replace with your actual image path
+        category: 'Threat Intelligence',
+        title: 'The Role of AI in Predicting Zero-Day Exploits',
+        description: 'Explore how machine learning models are trained to identify novel threats before they can be weaponized.',
+        link: '/blog/ai-predicting-zero-day'
+    },
+    {
+        image: '/cyber2.jpg', // Replace with your actual image path
+        category: 'Incident Response',
+        title: 'Crafting a Resilient Incident Response Plan for 2025',
+        description: 'The threat landscape is always evolving. Learn the key components of a modern IR plan that minimizes downtime.',
+        link: '/blog/resilient-incident-response-plan'
+    },
+    {
+        image: '/cyber3.jpg', // Replace with your actual image path
+        category: 'IoT Security',
+        title: 'Securing the Enterprise: Top 5 IoT Vulnerabilities',
+        description: 'As networks expand, so does the attack surface. We break down the most common IoT risks and how to mitigate them.',
+        link: '/blog/top-5-iot-vulnerabilities'
+    }
+];
+
+
 // --- Main Home Page Component ---
 export default function Home() {
 
@@ -97,9 +119,17 @@ export default function Home() {
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in').forEach(el => {
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(el => {
       observer.observe(el);
     });
+
+    // Cleanup observer on component unmount
+    return () => {
+        elements.forEach(el => {
+            observer.unobserve(el);
+        });
+    };
   }, []);
 
   return (
@@ -177,6 +207,76 @@ export default function Home() {
         </div>
       </section>
       
+      {/* --- NEW SECTION: How It Works --- */}
+      <section className="py-20 bg-surface fade-in">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-base font-semibold text-accent-primary tracking-wide uppercase">Our Approach</h2>
+            <p className="mt-2 text-3xl font-extrabold text-text-primary sm:text-4xl">
+              A Clear Path to Security
+            </p>
+          </div>
+          <div className="relative">
+            {/* Dotted line for desktop view */}
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-700/50" aria-hidden="true">
+                <div className="absolute w-full h-full bg-gradient-to-r from-transparent via-accent-primary/50 to-transparent animate-pulse"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                {processSteps.map((step) => (
+                <div key={step.title} className="text-center p-6 bg-background rounded-lg shadow-lg border border-transparent hover:border-accent-primary/50 transition-all">
+                    <div className="flex items-center justify-center h-20 w-20 rounded-full bg-surface mx-auto mb-6 border-2 border-accent-primary/30">
+                    {step.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-text-primary">{step.title}</h3>
+                    <p className="mt-2 text-base text-text-secondary">{step.description}</p>
+                </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- NEW SECTION: Featured Insights --- */}
+      <section className="py-20 bg-background fade-in">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-left mb-16 sm:text-center">
+                <h2 className="text-base font-semibold text-accent-primary tracking-wide uppercase">Knowledge Center</h2>
+                <p className="mt-2 text-3xl font-extrabold text-text-primary sm:text-4xl">
+                    Featured Insights & News
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {featuredInsights.map((insight) => (
+                    <div key={insight.title} className="bg-surface rounded-xl shadow-md overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                        {/* It's good practice to use Next/Image, but ensure your next.config.js is setup for image sources */}
+                        <div className="relative h-48 w-full">
+                           <Image
+                                src={insight.image}
+                                alt={insight.title}
+                                layout="fill"
+                                objectFit="cover"
+                                className="transition-transform duration-500 group-hover:scale-105"
+                           />
+                        </div>
+                        <div className="p-6">
+                            <p className="text-sm font-semibold text-accent-primary uppercase">{insight.category}</p>
+                            <h3 className="mt-2 text-xl font-bold text-text-primary leading-snug">
+                                <Link href={insight.link}><span className="hover:text-accent-primary transition-colors cursor-pointer">{insight.title}</span></Link>
+                            </h3>
+                            <p className="mt-3 text-base text-text-secondary">{insight.description}</p>
+                            <Link href={insight.link}>
+                                <span className="mt-4 inline-flex items-center text-accent-secondary font-semibold group-hover:text-accent-primary transition-colors">
+                                    Read More <ArrowRight className="ml-2 h-4 w-4" />
+                                </span>
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+      </section>
+
       {/* --- Final CTA Section --- */}
       <section className="bg-surface fade-in">
         <div className="max-w-4xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
