@@ -1,13 +1,8 @@
 @import "tailwindcss";
 
-:root {
-  /*
-    IMPROVED LIGHT THEME
-    - Uses a refined, modern palette with a neutral base.
-    - Accents are vibrant but more harmonious and professional.
-    - Colors are organized for better maintainability.
-  */
+@import "tailwindcss";
 
+:root {
   /* --- Base --- */
   --background: #F8F9FA; /* A very light, soft gray for the main background */
   --foreground: #111827; /* The primary text color, set for high contrast */
@@ -32,9 +27,10 @@
   --animation-scan-y: scan-y 8s ease-in-out infinite;
   --animation-pulse-node: pulse-node 3s ease-in-out infinite;
   --animation-path-draw: path-draw 10s ease-in-out infinite alternate;
+}
 
-  @theme {
-    --color-primary: var(--accent-primary);
+@theme inline {
+  --color-primary: var(--accent-primary);
     --color-primary-hover: var(--accent-primary-hover);
     --color-secondary: var(--accent-secondary);
     --color-text-primary: var(--text-primary);
@@ -48,44 +44,24 @@
     --color-accent-secondary: var(--accent-secondary);
     --color-accent-secondary-hover: #F59E0B; /* A slightly darker amber for hover effects */
     --color-accent-tertiary: #F472B6; /* A vibrant pink for tertiary accents */
-  }
+}
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes scan-y {
-    0% { transform: translateY(-10%); opacity: 0; }
-    20%, 80% { opacity: 0.4; }
-    100% { transform: translateY(110%); opacity: 0; }
-  }
-  @keyframes pulse-node {
-    0%, 100% { r: 2; opacity: 0.6; }
-    50% { r: 4; opacity: 1; }
-  }
-  @keyframes path-draw {
-    from { stroke-dashoffset: 1000; }
-    to { stroke-dashoffset: 0; }
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #F8F9FA; /* Light background */
+    --foreground: #111827; /* Dark text for high contrast */
+    --surface: #FFFFFF;    /* White surfaces for cards and modals */
+    --border: #E5E7EB;     /* Soft gray borders */
+    --text-primary: #111827;   /* Dark text for primary content */
+    --text-secondary: #6B7280; /* Muted gray for secondary content */
+    --accent-primary: #05F2A0;          /* Vibrant lime green for primary CTAs */
+    --accent-primary-hover: #04C885; /* Darker green for hover effects */
+    --accent-secondary: #FBBF23;        /* Warm gold/amber for secondary accents */
   }
 }
 
-/* Base body styles */
 body {
-  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
-/* Custom utility classes for animations (Unchanged) */
-@layer utilities {
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .fade-in-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  font-family: Arial, Helvetica, sans-serif;
 }
