@@ -57,8 +57,8 @@ const Footer = () => {
               <Image
                 src="/elite-2.png" // Ensure this path is correct in your `public` folder
                 alt="Elite AI Logo"
-                width={120}
-                height={30}
+                width={250}
+                height={150}
                 className="h-auto"
               />
             </Link>

@@ -14,7 +14,7 @@
   --text-secondary: #6B7280; /* Muted gray for subheadings, captions, and secondary content */
 
   /* --- Accents --- */
-  --accent-primary: #05F2A0;          /* A vibrant, "electric" lime green for primary CTAs and highlights */
+  --accent-primary: #32CD32;          /* A vibrant, "electric" lime green for primary CTAs and highlights */
   --accent-primary-hover: #04C885; /* A slightly darker green for interaction feedback */
   --accent-secondary: #FBBF23;        /* A modern, warm gold/amber for secondary accents */
 
