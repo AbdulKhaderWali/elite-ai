@@ -11,32 +11,36 @@ import HubIcon from '@mui/icons-material/Hub';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import { Shield, Lock } from 'lucide-react';
+import CybersecurityHeroBackground from '../components/HeroBackground';
 
 // --- Animated SVG Hero Background ---
 // This background is now fully theme-aware, using the new --accent-primary variable.
-const HeroBackgroundSVG = () => (
-    <div className="absolute inset-0 w-full h-full overflow-hidden -z-10">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
-                    {/* Grid lines now use the new accent-primary color's RGB values for a subtle effect */}
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(5, 242, 160, 0.05)" strokeWidth="0.5"/>
-                </pattern>
-                <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-                    <rect width="100" height="100" fill="url(#smallGrid)"/>
-                    <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(5, 242, 160, 0.1)" strokeWidth="1"/>
-                </pattern>
-                <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-                    {/* The glowing effect correctly uses the --accent-primary variable */}
-                    <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0" />
-                </radialGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            <circle cx="50%" cy="50%" r="40%" fill="url(#glow)" className="animate-pulse" />
-        </svg>
-    </div>
-);
+// const HeroBackgroundSVG = () => (
+//     <div className="absolute inset-0 w-full h-full overflow-hidden -z-10">
+//         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+//             <defs>
+//                 <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+//                     {/* Grid lines now use the new accent-primary color's RGB values for a subtle effect */}
+//                     <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(5, 242, 160, 0.05)" strokeWidth="0.5"/>
+//                 </pattern>
+//                 <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+//                     <rect width="100" height="100" fill="url(#smallGrid)"/>
+//                     <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(5, 242, 160, 0.1)" strokeWidth="1"/>
+//                 </pattern>
+//                 <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+//                     {/* The glowing effect correctly uses the --accent-primary variable */}
+//                     <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.3" />
+//                     <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0" />
+//                 </radialGradient>
+//             </defs>
+//             <rect width="100%" height="100%" fill="url(#grid)" />
+//             <circle cx="50%" cy="50%" r="40%" fill="url(#glow)" className="animate-pulse" />
+//         </svg>
+//     </div>
+// );
+
+
 
 // --- Data for Page Sections (Updated with new color classes) ---
 const services = [
@@ -102,7 +106,7 @@ export default function Home() {
     <div className="bg-background text-text-primary">
       {/* --- Hero Section --- */}
       <section className="relative bg-text-primary pt-40 pb-48 text-center isolate">
-        <HeroBackgroundSVG />
+        <CybersecurityHeroBackground />
         <div className="relative max-w-4xl mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
             Intelligent Cybersecurity for the Modern Age
