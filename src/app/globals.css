@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /*
+    IMPROVED LIGHT THEME
+    - Uses a refined, modern palette with a neutral base.
+    - Accents are vibrant but more harmonious and professional.
+    - Colors are organized for better maintainability.
+  */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* --- Base --- */
+  --background: #F8F9FA; /* A very light, soft gray for the main background */
+  --foreground: #111827; /* The primary text color, set for high contrast */
+  
+  /* --- Surfaces & Borders --- */
+  --surface: #FFFFFF;    /* Pure white for cards, modals, and elevated surfaces */
+  --border: #E5E7EB;     /* A soft, non-intrusive gray for dividers and borders */
+  
+  /* --- Text --- */
+  --text-primary: #111827;   /* Dark, highly-readable gray for headings and primary content */
+  --text-secondary: #6B7280; /* Muted gray for subheadings, captions, and secondary content */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* --- Accents --- */
+  --accent-primary: #05F2A0;          /* A vibrant, "electric" lime green for primary CTAs and highlights */
+  --accent-primary-hover: #04C885; /* A slightly darker green for interaction feedback */
+  --accent-secondary: #FBBF23;        /* A modern, warm gold/amber for secondary accents */
+
+
+  /* --- ANIMATIONS (Unchanged) --- */
+  --animation-spin: spin 1s linear infinite;
+  --animation-spin-slow: spin 40s linear infinite;
+  --animation-scan-y: scan-y 8s ease-in-out infinite;
+  --animation-pulse-node: pulse-node 3s ease-in-out infinite;
+  --animation-path-draw: path-draw 10s ease-in-out infinite alternate;
+
+  @theme {
+    --color-primary: var(--accent-primary);
+    --color-primary-hover: var(--accent-primary-hover);
+    --color-secondary: var(--accent-secondary);
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-surface: var(--surface);
+    --color-border: var(--border);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-accent-primary: var(--accent-primary);
+    --color-accent-primary-hover: var(--accent-primary-hover);
+    --color-accent-secondary: var(--accent-secondary);
+    --color-accent-secondary-hover: #F59E0B; /* A slightly darker amber for hover effects */
+    --color-accent-tertiary: #F472B6; /* A vibrant pink for tertiary accents */
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes scan-y {
+    0% { transform: translateY(-10%); opacity: 0; }
+    20%, 80% { opacity: 0.4; }
+    100% { transform: translateY(110%); opacity: 0; }
+  }
+  @keyframes pulse-node {
+    0%, 100% { r: 2; opacity: 0.6; }
+    50% { r: 4; opacity: 1; }
+  }
+  @keyframes path-draw {
+    from { stroke-dashoffset: 1000; }
+    to { stroke-dashoffset: 0; }
   }
 }
 
+/* Base body styles */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Custom utility classes for animations (Unchanged) */
+@layer utilities {
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .fade-in-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
